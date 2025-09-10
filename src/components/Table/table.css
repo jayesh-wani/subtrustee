@@ -1,0 +1,67 @@
+.new-shadow:hover {
+  box-shadow: rgba(43, 45, 66, 0.14) 0px 3px 10px;
+  /* position: relative; */
+}
+.select-shadow {
+  box-shadow: rgba(43, 45, 66, 0.14) 0px 3px 10px;
+}
+
+.card-shadow {
+  box-shadow: 1px 1px 4px 0px rgba(169, 178, 207, 1);
+}
+
+td {
+  padding: 10px;
+}
+th {
+  padding: 10px;
+}
+
+td:first-child {
+  border-left-style: solid;
+
+  border-top-left-radius: 10px;
+
+  border-bottom-left-radius: 10px;
+}
+td:last-child {
+  border-right-style: solid;
+
+  border-bottom-right-radius: 10px;
+
+  border-top-right-radius: 10px;
+}
+th:first-child {
+  border-left-style: solid;
+
+  border-top-left-radius: 10px;
+
+  border-bottom-left-radius: 10px;
+}
+th:last-child {
+  border-right-style: solid;
+
+  border-bottom-right-radius: 10px;
+
+  border-top-right-radius: 10px;
+}
+
+.profile-shadow {
+  box-shadow: 1px 1px 4px 0px rgba(169, 178, 207, 1);
+}
+
+.activeStatus {
+  background: linear-gradient(180deg, #6687ff 0%, #1b163b 288.19%);
+}
+.deactiveStatus {
+  background: linear-gradient(
+    180deg,
+    #717171 0%,
+    rgba(144, 145, 146, 0.25) 288.19%
+  );
+}
+@media (max-width: 1080px) {
+  .pagination-div {
+    flex-direction: column;
+  }
+}
