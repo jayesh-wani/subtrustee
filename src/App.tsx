@@ -8,7 +8,10 @@ import PublicRoute from "./components/PublicRoute";
 import Overview from "./pages/Dashboard/Overview/Overview";
 import Institute from "./pages/Dashboard/Institute/Institute";
 import PaymentLayout from "./pages/Dashboard/Payments/PaymentLayout";
-import Transaction from "./pages/Dashboard/Payments/Transaction/Transaction";
+import Transaction from "./pages/Dashboard/Transaction/Transaction";
+import { ToastContainer } from "react-toastify";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 
 function App() {
   return (
@@ -39,6 +42,18 @@ function App() {
           </Route>
         </Route>
       </Routes>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 }
