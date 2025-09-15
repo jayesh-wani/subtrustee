@@ -12,6 +12,7 @@ import Transaction from "./pages/Dashboard/Transaction/Transaction";
 import { ToastContainer } from "react-toastify";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import Settlement from "./pages/Dashboard/Settlement/Settlement";
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
           <Route path="payments" element={<PaymentLayout menu={true} />}>
             <Route index element={<Transaction />} />
             <Route path="transaction" element={<Transaction />} />
-            <Route path="settlements" element={<div>Settlements</div>} />
+            <Route path="settlements" element={<Settlement />} />
           </Route>
         </Route>
       </Routes>

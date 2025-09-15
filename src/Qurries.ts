@@ -134,3 +134,59 @@ export const GET_TRANSACTIONS = gql`
     }
   }
 `;
+
+export const GET_SETTLEMENT_REPORTS = gql`
+  query GetSettlementReportsSubTrustee {
+    getSettlementReportsSubTrustee {
+      settlementAmount
+      adjustment
+      netSettlementAmount
+      fromDate
+      tillDate
+      status
+      utrNumber
+      settlementDate
+      trustee
+      schoolId
+      clientId
+    }
+  }
+`;
+
+export const GET_TRANSACTIONS_OF_SETTLEMENT = gql`
+  query GetSettlementsTransactions(
+    $utr: String!
+    $cursor: String!
+    $limit: Int!
+    $skip: Int!
+  ) {
+    getSettlementsTransactions(
+      utr: $utr
+      cursor: $cursor
+      limit: $limit
+      skip: $skip
+    ) {
+      limit
+      cursor
+      settlements_transactions {
+        custom_order_id
+        order_id
+        event_status
+        event_settlement_amount
+        order_amount
+        event_amount
+        event_time
+        payment_group
+        settlement_utr
+        student_id
+        school_name
+        student_name
+        student_email
+        student_phone_no
+        school_id
+        additional_data
+        payment_id
+      }
+    }
+  }
+`;
