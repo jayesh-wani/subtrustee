@@ -32,6 +32,16 @@ export default function PaymentLayout({ menu = true }: { menu: boolean }) {
           >
             Settlements
           </NavLink>
+          <NavLink
+            to="/payments/refunds"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-[#6687FF33]   py-1.5 font-semibold rounded-lg text-[14px] text-left pl-10 text-[#1B163B]"
+                : "py-1.5 font-semibold rounded-lg text-[14px] text-left pl-10 text-[#717171]"
+            }
+          >
+            Refund
+          </NavLink>
         </div>
       </div>
       <div className={"tab-content w-full py-4 " + (menu ? " pl-64" : " pl-2")}>

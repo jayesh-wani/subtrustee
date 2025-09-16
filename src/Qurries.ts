@@ -190,3 +190,44 @@ export const GET_TRANSACTIONS_OF_SETTLEMENT = gql`
     }
   }
 `;
+
+export const SUBTRUSTEE_REFUND_REQUESTS = gql`
+  query GetSubTrusteeRefundRequest(
+    $page: Float
+    $limit: Float
+    $school_id: [String!]
+    $searchQuery: String
+    $status: String
+    $startDate: String
+    $endDate: String
+  ) {
+    getSubTrusteeRefundRequest(
+      page: $page
+      limit: $limit
+      searchQuery: $searchQuery
+      status: $status
+      startDate: $startDate
+      endDate: $endDate
+      school_id: $school_id
+    ) {
+      currentPage
+      totalPages
+      totalItems
+      refund {
+        _id
+        trustee_id
+        createdAt
+        updatedAt
+        school_id
+        order_id
+        status
+        refund_amount
+        order_amount
+        transaction_amount
+        school_name
+        custom_id
+        reason
+      }
+    }
+  }
+`;

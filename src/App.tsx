@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import Settlement from "./pages/Dashboard/Settlement/Settlement";
+import Refund from "./pages/Dashboard/Refund/Refund";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route index element={<Transaction />} />
             <Route path="transaction" element={<Transaction />} />
             <Route path="settlements" element={<Settlement />} />
+            <Route path="refunds" element={<Refund />} />
           </Route>
         </Route>
       </Routes>
