@@ -153,14 +153,14 @@ export const GET_SETTLEMENT_REPORTS = gql`
   }
 `;
 
-export const GET_TRANSACTIONS_OF_SETTLEMENT = gql`
-  query GetSettlementsTransactions(
+export const GET_SUBTRUSTEE_TRANSACTIONS_OF_SETTLEMENT = gql`
+  query GetSubtrusteeSettlementsTransactions(
     $utr: String!
     $cursor: String!
     $limit: Int!
     $skip: Int!
   ) {
-    getSettlementsTransactions(
+    getSubtrusteeSettlementsTransactions(
       utr: $utr
       cursor: $cursor
       limit: $limit

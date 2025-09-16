@@ -15,6 +15,7 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import Settlement from "./pages/Dashboard/Settlement/Settlement";
 import Refund from "./pages/Dashboard/Refund/Refund";
 import TransactionReceipt from "./pages/Dashboard/Transaction/TransactionReceipt";
+import TransactionsOfSettlement from "./pages/Dashboard/Settlement/TransactionsOfSettlement";
 
 function App() {
   return (
@@ -47,6 +48,10 @@ function App() {
           <Route
             path="/payments/transaction-receipt/:collectId"
             element={<TransactionReceipt />}
+          />
+          <Route
+            path="/payments/settlements-transaction"
+            element={<TransactionsOfSettlement />}
           />
         </Route>
       </Routes>
