@@ -231,3 +231,62 @@ export const SUBTRUSTEE_REFUND_REQUESTS = gql`
     }
   }
 `;
+
+export const GET_SINGLE_SUBTRUSTEE_TRANSACTION_INFO = gql`
+  query GetSingleTransactionReportForSubTrustee(
+    $collect_id: String!
+    $school_id: String
+    $isVBAPaymentComplete: Boolean
+  ) {
+    getSingleTransactionReportForSubTrustee(
+      collect_id: $collect_id
+      school_id: $school_id
+      isVBAPaymentComplete: $isVBAPaymentComplete
+    ) {
+      collect_id
+      payment_id
+      updatedAt
+      createdAt
+      order_amount
+      transaction_amount
+      payment_method
+      school_name
+      school_id
+      status
+      student_id
+      student_name
+      student_email
+      student_phone
+      student_receipt
+      bank_reference
+      remarks
+      details
+      isAutoRefund
+      isQRPayment
+      commission
+      custom_order_id
+      payment_time
+      vendors_info {
+        vendor_id
+        percentage
+        amount
+        name
+        edv_vendor_id
+      }
+      reason
+      gateway
+      capture_status
+      virtual_account_id
+      isVBAPaymentComplete
+      error_details {
+        error_description
+        error_reason
+        error_source
+      }
+      virtual_account_ifsc
+      virtual_account_number
+      utr_number
+      settlement_transfer_time
+    }
+  }
+`;

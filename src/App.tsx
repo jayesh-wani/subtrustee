@@ -14,6 +14,7 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import Settlement from "./pages/Dashboard/Settlement/Settlement";
 import Refund from "./pages/Dashboard/Refund/Refund";
+import TransactionReceipt from "./pages/Dashboard/Transaction/TransactionReceipt";
 
 function App() {
   return (
@@ -43,6 +44,10 @@ function App() {
             <Route path="settlements" element={<Settlement />} />
             <Route path="refunds" element={<Refund />} />
           </Route>
+          <Route
+            path="/payments/transaction-receipt/:collectId"
+            element={<TransactionReceipt />}
+          />
         </Route>
       </Routes>
       <ToastContainer
