@@ -390,3 +390,28 @@ export const GET_ALL_VENDOR_SUBTRUSTEE_SETTLEMENT = gql`
     }
   }
 `;
+
+export const GET_SINGLE_VENDOR_TRANSACTION = gql`
+  query GetSingleSubtrusteeVendorTransaction($order_id: String!) {
+    getSingleSubtrusteeVendorTransaction(order_id: $order_id) {
+      _id
+      collect_id
+      custom_id
+      name
+      school_id
+      status
+      amount
+      createdAt
+      updatedAt
+      gateway
+      additional_data
+      trustee_id
+      custom_order_id
+      payment_method
+      bank_reference
+      transaction_amount
+      payment_detail
+      details
+    }
+  }
+`;

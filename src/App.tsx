@@ -18,6 +18,7 @@ import TransactionReceipt from "./pages/Dashboard/Transaction/TransactionReceipt
 import TransactionsOfSettlement from "./pages/Dashboard/Settlement/TransactionsOfSettlement";
 import VendorTransaction from "./pages/Dashboard/Payments/VendorTab/VendorTransaction";
 import VendorSettlement from "./pages/Dashboard/Payments/VendorTab/VendorSettlement";
+import VendorTransactionReceipt from "./pages/Dashboard/Payments/VendorTab/VendorTransactionReceipt";
 
 function App() {
   return (
@@ -52,6 +53,10 @@ function App() {
           <Route
             path="/payments/transaction-receipt/:collectId"
             element={<TransactionReceipt />}
+          />
+          <Route
+            path="/payments/vendor-transaction-receipt"
+            element={<VendorTransactionReceipt />}
           />
 
           <Route

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 
 export default function PaymentLayout({ menu = true }: { menu: boolean }) {
   const [vendorTab, setVendorTab] = useState(false);
   const location = useLocation();
+
   return (
     <div className="flex">
       <div

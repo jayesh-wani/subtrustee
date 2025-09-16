@@ -1,19 +1,18 @@
 /* eslint-disable react/jsx-pascal-case */
-import React, { useContext, useEffect, useRef, useState, Context } from "react";
-import { dashboardContext } from "../../Dashboard";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { _Table } from "../../../../components/Table";
 import { useMutation, useQuery } from "@apollo/client";
 import {
-  ADD_REMARK,
-  DELETE_REMARK,
-  GET_TRANSACTION_REFUND,
-  GET_TRANSACTION_REPORT,
-  GET_TRANSACTION_UTR,
+  // ADD_REMARK,
+  // DELETE_REMARK,
+  // GET_TRANSACTION_REFUND,
+  // GET_TRANSACTION_REPORT,
+  // GET_TRANSACTION_UTR,
   GET_SINGLE_VENDOR_TRANSACTION,
 } from "../../../../Qurries";
-import Modal from "../../../../components/Modal/Modal";
+// import Modal from "../../../../components/Modal/Modal";
 // import {
 //   Form,
 //   Input,
@@ -23,7 +22,7 @@ import Modal from "../../../../components/Modal/Modal";
 // import refundIcon from "../../../../assets/refund.svg";
 import refundIcon from "../../../../assets/a_round.svg";
 import { toast } from "react-toastify";
-import ConfirmationBox from "../../../../components/ConfermationBox";
+// import ConfirmationBox from "../../../../components/ConfermationBox";
 import {
   Link,
   Navigate,
@@ -34,7 +33,7 @@ import {
 import { FaRegEdit } from "react-icons/fa";
 // import { amountFormat } from "../../../../utils/amountFormat";
 import { getStartAndEndOfMonth } from "../../../../utils/getStartAndEndOfMonth";
-import Aword from "../../../assets/a_round.svg";
+// import Aword from "../../../assets/a_round.svg";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { getBankName } from "../../../../utils/getBankName";
 export function PaymentSmallCard({ title, value, icon }: any) {
@@ -78,15 +77,11 @@ function VendorTransactionReceipt() {
   const amount = detail?.state?.amount;
   const schoolName = detail?.state?.schoolName;
 
-  const {
-    data: vendorTransactions,
-    loading,
-    refetch,
-  } = useQuery(GET_SINGLE_VENDOR_TRANSACTION, {
+  const { data: vendorTransactions } = useQuery(GET_SINGLE_VENDOR_TRANSACTION, {
     onCompleted(data) {
-      setTransaction(data?.getSingleVendorTransaction);
+      setTransaction(data?.getSingleSubtrusteeVendorTransaction);
       setStudentDetail(
-        JSON.parse(data?.getSingleVendorTransaction?.additional_data),
+        JSON.parse(data?.getSingleSubtrusteeVendorTransaction?.additional_data),
       );
     },
     variables: {
@@ -94,32 +89,32 @@ function VendorTransactionReceipt() {
     },
   });
 
-  const { startDate, endDate } = getStartAndEndOfMonth();
-  const [addRemark] = useMutation(ADD_REMARK, {
-    refetchQueries: [
-      {
-        query: GET_TRANSACTION_REPORT,
-        variables: {
-          startDate: startDate,
-          endDate: endDate,
-        },
-      },
-    ],
-  });
-  const [deleteRemark, { loading: deleteRemarkLoading }] = useMutation(
-    DELETE_REMARK,
-    {
-      refetchQueries: [
-        {
-          query: GET_TRANSACTION_REPORT,
-          variables: {
-            startDate: startDate,
-            endDate: endDate,
-          },
-        },
-      ],
-    },
-  );
+  // const { startDate, endDate } = getStartAndEndOfMonth();
+  // const [addRemark] = useMutation(ADD_REMARK, {
+  //   refetchQueries: [
+  //     {
+  //       query: GET_TRANSACTION_REPORT,
+  //       variables: {
+  //         startDate: startDate,
+  //         endDate: endDate,
+  //       },
+  //     },
+  //   ],
+  // });
+  // const [deleteRemark, { loading: deleteRemarkLoading }] = useMutation(
+  //   DELETE_REMARK,
+  //   {
+  //     refetchQueries: [
+  //       {
+  //         query: GET_TRANSACTION_REPORT,
+  //         variables: {
+  //           startDate: startDate,
+  //           endDate: endDate,
+  //         },
+  //       },
+  //     ],
+  //   },
+  // );
 
   const handlePrint = (elem: any) => {
     const printContents: any = document.getElementById("receipt");
@@ -143,7 +138,7 @@ function VendorTransactionReceipt() {
 
   return (
     <div className="min-h-[80vh] rounded-lg mt-4 bg-[#F6F8FA] p-4">
-      <Modal
+      {/* <Modal
         title="Add Remark"
         open={openRemarkModal}
         setOpen={setOpenRemarkModal}
@@ -228,7 +223,7 @@ function VendorTransactionReceipt() {
           confirmationText="Delete Remark"
           ButtonText="Delete Remark"
         />
-      </Modal>
+      </Modal> */}
       {/* <Modal
         open={openInitiateRefundModal}
         setOpen={setOpenInitiateRefundModal}
@@ -348,7 +343,7 @@ function VendorTransactionReceipt() {
         <p className=" my-4 text-base text-[#767676] font-medium">
           Payment details
         </p>
-        <div className="overflow-hidden border rounded-lg">
+        <div className="overflow-hidden border border-[#E7EDFB] rounded-lg">
           <div className=" bg-[#6687FF1A] border-b border-[#A9B2CF] flex items-center px-8 py-4">
             <div className="flex items-center gap-x-10">
               <p className=" text-[#1B163B] font-semibold text-sm">
@@ -462,7 +457,7 @@ function VendorTransactionReceipt() {
             <p className=" my-4 text-base text-[#767676] font-medium">
               User details
             </p>
-            <div className="p-8 border rounded-lg grid grid-cols-2 gap-6">
+            <div className="p-8 border border-[#E7EDFB] rounded-lg grid grid-cols-2 gap-6">
               <PaymentSmallCard
                 title="Student name"
                 value={studentDetail?.student_details?.student_name || "NA"}
@@ -491,7 +486,7 @@ function VendorTransactionReceipt() {
             <p className=" my-4 text-base text-[#767676] font-medium">
               Additional details
             </p>
-            <div className="p-8 border h-[80%] rounded-lg grid grid-cols-2 gap-6">
+            <div className="p-8 border border-[#E7EDFB] h-[80%] rounded-lg grid grid-cols-2 gap-6">
               NA
             </div>
           </div>
