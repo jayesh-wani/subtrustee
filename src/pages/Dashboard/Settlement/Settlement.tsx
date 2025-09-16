@@ -281,6 +281,7 @@ const Settlement = () => {
           exportBtn={true}
           heading={"History"}
           srNo={false}
+          loading={schoolsLoading}
           pagination={false}
           copyContent={[11]}
           filter={[debouncedSearch]}

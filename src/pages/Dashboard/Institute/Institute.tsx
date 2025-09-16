@@ -1,5 +1,8 @@
-import { useQuery } from "@apollo/client";
-import { GET_INSTITUTES } from "../../../Qurries";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  GET_INSTITUTES,
+  LOGIN_TO_MERCHANT_WITH_TRUSTEE,
+} from "../../../Qurries";
 import {
   Pagination,
   RowsPerPageSelect,
@@ -31,8 +34,9 @@ export default function Institute() {
   const schools = data?.getSubTrusteeSchools?.schools || [];
   const debounceTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  if (loading) return <div>Loading...</div>;
+  // if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+  const [logInToMerchant] = useMutation(LOGIN_TO_MERCHANT_WITH_TRUSTEE);
 
   return (
     <div>
@@ -227,13 +231,15 @@ export default function Institute() {
                     },
                   });
 
-                  if (res?.data?.generateMerchantLoginToken) {
+                  if (res?.data?.generateSubtrusteeMerchantLoginToken) {
                     window.open(
-                      `${process.env.REACT_APP_MERCHANT_DASHBOARD_URL}/admin?token=${res?.data?.generateMerchantLoginToken}`,
+                      `${import.meta.env.VITE_MERCHANT_DASHBOARD_URL}/admin?token=${res?.data?.generateSubtrusteeMerchantLoginToken}`,
                       "_blank",
                     );
                   }
-                } catch (err) {}
+                } catch (err) {
+                  console.log("error", err);
+                }
               }}
             >
               Login to Dashboard

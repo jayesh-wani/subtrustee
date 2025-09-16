@@ -2,8 +2,8 @@ import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 import AllFilters from "./AllFilter/AllFilters";
-// import "react-date-range-ts/dist/styles.css";
-// import "react-date-range-ts/dist/theme/default.css";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
 import { toast } from "react-toastify";
 
@@ -207,7 +207,7 @@ function Filters(props: any) {
           <IoIosArrowDown className=" ml-auto w-8" />
         </button>
         {dropDownOpt.date && (
-          <div className="absolute left-0 mt-2 text-sm bg-white  lg:min-w-[26rem] min-w-[20rem]  min-h-[27rem] px-2 pr-4 pb-2 rounded-md shadow-lg z-10 grid lg:grid-cols-8 grid-cols-1">
+          <div className="absolute left-0 mt-2 text-sm bg-white  lg:min-w-[26rem] min-w-[20rem]  min-h-[27rem] px-2 pr-4 pb-2 rounded-md shadow-lg z-10 ">
             {props.transaction ? (
               <div className="w-full lg:col-span-3 col-span-8 py-4">
                 <div className="grid grid-cols-2 ">
@@ -382,12 +382,13 @@ function Filters(props: any) {
                   <button
                     disabled={isNaN(props.dateRange[0].endDate?.getTime())}
                     onClick={() => handleTimeFilter("Custom Date Range")}
-                    className={`${
-                      !isNaN(props.dateRange[0].endDate?.getTime()) &&
-                      props.dateRange[0].startDate
-                        ? "bg-edviron_black text-white"
-                        : "bg-gray-100 text-gray-500"
-                    } px-4 py-2 rounded-md `}
+                    className="bg-gray-100 text-gray-500 px-4 py-2 rounded-md"
+                    // className={`${
+                    //   !isNaN(props.dateRange[0].endDate?.getTime()) &&
+                    //   props.dateRange[0].startDate
+                    //     ? "bg-edviron_black text-white"
+                    //     : "bg-gray-100 text-gray-500"
+                    // } px-4 py-2 rounded-md `}
                   >
                     Apply
                   </button>
@@ -432,12 +433,13 @@ function Filters(props: any) {
                       handleApplyClick();
                       toogleDropDownOpt("date");
                     }}
-                    className={`${
-                      !isNaN(props.dateRange[0].endDate?.getTime()) &&
-                      props.dateRange[0].startDate
-                        ? "bg-edviron_black text-white"
-                        : "bg-gray-100 text-gray-500"
-                    } px-4 py-2 rounded-lg `}
+                    className="bg-gray-100 text-gray-500 px-4 py-2 rounded-md"
+                    // className={`${
+                    //   !isNaN(props.dateRange[0].endDate?.getTime()) &&
+                    //   props.dateRange[0].startDate
+                    //     ? "bg-edviron_black text-white"
+                    //     : "bg-gray-100 text-gray-500"
+                    // } px-4 py-2 rounded-lg `}
                   >
                     Apply
                   </button>
