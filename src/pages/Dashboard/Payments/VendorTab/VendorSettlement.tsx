@@ -6,7 +6,7 @@ import {
   RowsPerPageSelect,
 } from "../../../../components/Table";
 import { useQuery } from "@apollo/client";
-import { GET_ALL_VENDOR_SETTLEMENT } from "../../../../Qurries";
+import { GET_ALL_VENDOR_SUBTRUSTEE_SETTLEMENT } from "../../../../Qurries";
 import { amountFormat } from "../../../../utils/amountFormat";
 import { getStartAndEndOfMonth } from "../../../../utils/getStartAndEndOfMonth";
 import TransactionDateFilter, {
@@ -32,27 +32,30 @@ function VendorSettlement() {
   const [settlementData, setSettlementData] = useState<any>([]);
   const [isDateRangeIsSelected, setIsDateRangeIsSelected] = useState(false);
   const [status, setStatus] = useState<any>(null);
-  const [schoolId, setSchoolId] = useState<string>("");
+  const [schoolId, setSchoolId] = useState<any>([]);
   const [selectSchool, setSelectSchool] = useState("");
   const [refetching, setRefetching] = useState(false);
   const { startDate, endDate } = getStartAndEndOfMonth();
   const [searchFilter, setSearchFilter] = useState<any>("");
 
-  const { data, loading, refetch } = useQuery(GET_ALL_VENDOR_SETTLEMENT, {
-    onCompleted(data) {
-      if (data?.getAllVendorSettlementReport?.vendor_settlements) {
-        setSettlementData(
-          data?.getAllVendorSettlementReport?.vendor_settlements,
-        );
-      }
+  const { data, loading, refetch } = useQuery(
+    GET_ALL_VENDOR_SUBTRUSTEE_SETTLEMENT,
+    {
+      onCompleted(data) {
+        if (data?.getAllSubtrusteeVendorSettlementReport?.vendor_settlements) {
+          setSettlementData(
+            data?.getAllSubtrusteeVendorSettlementReport?.vendor_settlements,
+          );
+        }
+      },
+      variables: {
+        page: currentPage,
+        limit: itemsPerRow.name,
+        startDate: startDate,
+        endDate: endDate,
+      },
     },
-    variables: {
-      page: currentPage,
-      limit: itemsPerRow.name,
-      startDate: startDate,
-      endDate: endDate,
-    },
-  });
+  );
 
   const refetchDataFetch = async ({
     start_date,
@@ -67,7 +70,7 @@ function VendorSettlement() {
     end_date?: any;
     page?: String;
     status?: String;
-    school_id?: string | null;
+    school_id?: string[] | null;
     limit?: String;
     vendor_id?: string;
     utr?: string;
@@ -84,10 +87,13 @@ function VendorSettlement() {
         vendor_id,
         utr,
       });
-      if (data?.data?.getAllVendorSettlementReport?.vendor_settlements) {
+      if (
+        data?.data?.getAllSubtrusteeVendorSettlementReport?.vendor_settlements
+      ) {
         setRefetching(false);
         setSettlementData(
-          data?.data?.getAllVendorSettlementReport?.vendor_settlements,
+          data?.data?.getAllSubtrusteeVendorSettlementReport
+            ?.vendor_settlements,
         );
       }
     } catch (error) {}
@@ -102,7 +108,7 @@ function VendorSettlement() {
         ? formatDate(selectedRange.endDate)
         : endDate,
       status: status?.toUpperCase(),
-      school_id: schoolId === "" ? null : schoolId,
+      school_id: schoolId && schoolId.length > 0 ? schoolId : [],
       vendor_id: searchFilter === "vendor_id" ? searchText : null,
       utr: searchFilter === "utr" ? searchText : null,
     });
@@ -261,7 +267,8 @@ function VendorSettlement() {
                       refetchDataFetch({
                         start_date: formatDate(selectedRange.startDate),
                         end_date: formatDate(selectedRange.endDate),
-                        school_id: schoolId === "" ? null : schoolId,
+                        school_id:
+                          schoolId && schoolId.length > 0 ? schoolId : [],
                       });
                     }}
                     selectedRange={selectedRange}
@@ -300,7 +307,8 @@ function VendorSettlement() {
                             start_date: startDate,
                             end_date: endDate,
                             status: status?.toUpperCase(),
-                            school_id: schoolId === "" ? null : schoolId,
+                            school_id:
+                              schoolId && schoolId.length > 0 ? schoolId : [],
                           });
 
                           setIsDateRangeIsSelected(false);
@@ -333,7 +341,8 @@ function VendorSettlement() {
                             start_date: startDate,
                             end_date: endDate,
                             status: status?.toUpperCase(),
-                            school_id: schoolId === "" ? null : schoolId,
+                            school_id:
+                              schoolId && schoolId.length > 0 ? schoolId : [],
                           });
                           setDateRange("");
                           setIsDateRangeIsSelected(false);
@@ -396,7 +405,8 @@ function VendorSettlement() {
                             end_date: isDateRangeIsSelected
                               ? formatDate(selectedRange.endDate)
                               : endDate,
-                            school_id: schoolId === "" ? null : schoolId,
+                            school_id:
+                              schoolId && schoolId.length > 0 ? schoolId : [],
                           });
                           setStatus(null);
                         } else {
@@ -495,7 +505,9 @@ function VendorSettlement() {
             <div className="flex justify-center items-center">
               <Pagination
                 currentPage={currentPage}
-                totalPages={data?.getAllVendorSettlementReport?.totalPages}
+                totalPages={
+                  data?.getAllSubtrusteeVendorSettlementReport?.totalPages
+                }
                 onPageChange={handlePageChange}
               />
             </div>

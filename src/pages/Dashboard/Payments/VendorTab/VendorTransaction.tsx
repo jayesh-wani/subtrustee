@@ -2,7 +2,7 @@ import { useLazyQuery, useQuery } from "@apollo/client";
 import React, { useContext, useEffect, useState } from "react";
 import {
   // GET_SINGLE_VENDOR_TRANSACTION,
-  GET_VENDOR_ALL_TRANSACTION,
+  GET_VENDOR_ALL_SUBTRUSTEE_TRANSACTION,
 } from "../../../../Qurries";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
@@ -52,7 +52,7 @@ function VendorTransaction() {
     data: vendorTransactions,
     loading,
     refetch,
-  } = useQuery(GET_VENDOR_ALL_TRANSACTION, {
+  } = useQuery(GET_VENDOR_ALL_SUBTRUSTEE_TRANSACTION, {
     onCompleted(data) {
       setTransactionData(
         data?.getAllSubtrusteeVendorTransaction?.vendorsTransaction,
@@ -188,6 +188,8 @@ function VendorTransaction() {
       }
     }
   };
+
+  console.log("here");
 
   useEffect(() => {
     refetchDataFetch({

@@ -290,3 +290,103 @@ export const GET_SINGLE_SUBTRUSTEE_TRANSACTION_INFO = gql`
     }
   }
 `;
+
+export const GET_VENDOR_ALL_SUBTRUSTEE_TRANSACTION = gql`
+  query GetAllSubtrusteeVendorTransaction(
+    $page: Int!
+    $limit: Int!
+    $startDate: String
+    $endDate: String
+    $status: String
+    $vendor_id: String
+    $custom_id: String
+    $order_id: String
+    $school_id: [String!]
+    $payment_modes: [String!]
+    $gateway: [String!]
+  ) {
+    getAllSubtrusteeVendorTransaction(
+      page: $page
+      limit: $limit
+      startDate: $startDate
+      endDate: $endDate
+      status: $status
+      vendor_id: $vendor_id
+      custom_id: $custom_id
+      order_id: $order_id
+      school_id: $school_id
+      payment_modes: $payment_modes
+      gateway: $gateway
+    ) {
+      totalCount
+      page
+      totalPages
+      limit
+      vendorsTransaction {
+        collect_id
+        custom_id
+        name
+        school_id
+        status
+        amount
+        createdAt
+        updatedAt
+        transaction_amount
+        payment_method
+        gateway
+        additional_data
+        custom_order_id
+        schoolName
+      }
+    }
+  }
+`;
+
+export const GET_ALL_VENDOR_SUBTRUSTEE_SETTLEMENT = gql`
+  query GetAllSubtrusteeVendorSettlementReport(
+    $page: Int!
+    $limit: Int!
+    $start_date: String
+    $end_date: String
+    $utr: String
+    $school_id: [String!]
+    $vendor_id: String
+  ) {
+    getAllSubtrusteeVendorSettlementReport(
+      page: $page
+      limit: $limit
+      start_date: $start_date
+      end_date: $end_date
+      utr: $utr
+      school_id: $school_id
+      vendor_id: $vendor_id
+    ) {
+      totalCount
+      page
+      totalPages
+      limit
+      vendor_settlements {
+        _id
+        school_id
+        vendor_id
+        trustee_id
+        client_id
+        utr
+        adjustment
+        settlement_amount
+        net_settlement_amount
+        vendor_transaction_amount
+        payment_from
+        payment_till
+        settled_on
+        settlement_id
+        settlement_initiated_on
+        status
+        school_name
+        vendor_name
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
