@@ -417,7 +417,7 @@ export const GET_SINGLE_VENDOR_TRANSACTION = gql`
 `;
 
 export const LOGIN_TO_MERCHANT_WITH_TRUSTEE = gql`
-  mutation GenerateSubtrusteeMerchantLoginToken($email: String!) {
-    generateSubtrusteeMerchantLoginToken(email: $email)
+  mutation GenerateMerchantLoginTokenForSubtrustee($email: String!) {
+    generateMerchantLoginTokenForSubtrustee(email: $email)
   }
 `;

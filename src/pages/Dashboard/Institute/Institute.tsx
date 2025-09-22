@@ -128,7 +128,9 @@ export default function Institute() {
           ],
           ...schools?.map((school: any, index: number) => [
             <div className="ml-4">
-              {/* {(data.getSchoolQuery.page - 1) * itemsPerRow.name + index + 1}. */}
+              {(data.getSubTrusteeSchools.page - 1) * itemsPerRow.name +
+                index +
+                1}
             </div>,
             <div
               className="flex justify-between items-center"
@@ -222,7 +224,7 @@ export default function Institute() {
 
             <button
               disabled={!school.pg_key || !school.email}
-              className="px-4 py-2 border disabled:border-gray-400 disabled:text-gray-400 border-edviron_black text-[#6687FF] font-normal rounded-[4px]"
+              className="px-4 py-2 border cursor-pointer disabled:border-gray-400 disabled:text-gray-400 border-edviron_black text-[#6687FF] font-normal rounded-[4px]"
               onClick={async () => {
                 try {
                   const res = await logInToMerchant({
@@ -231,9 +233,9 @@ export default function Institute() {
                     },
                   });
 
-                  if (res?.data?.generateSubtrusteeMerchantLoginToken) {
+                  if (res?.data?.generateMerchantLoginTokenForSubtrustee) {
                     window.open(
-                      `${import.meta.env.VITE_MERCHANT_DASHBOARD_URL}/admin?token=${res?.data?.generateSubtrusteeMerchantLoginToken}`,
+                      `${import.meta.env.VITE_MERCHANT_DASHBOARD_URL}/admin?token=${res?.data?.generateMerchantLoginTokenForSubtrustee}`,
                       "_blank",
                     );
                   }
