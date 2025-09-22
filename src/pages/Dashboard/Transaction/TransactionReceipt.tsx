@@ -139,7 +139,7 @@ function TransactionReceipt() {
   //     ],
   //   });
 
-  const handlePrint = (elem: any) => {
+  const handlePrint = (_elem: any) => {
     const printContents: any = document.getElementById("receipt");
     html2canvas(printContents).then((canvas: any) => {
       const imgData = canvas.toDataURL("image/png");
