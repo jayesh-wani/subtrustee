@@ -47,7 +47,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
         const config = {
           method: "post",
-          url: `${process.env.REACT_APP_BACKEND_URL}/main-backend/send-queryError-mail`,
+          url: `http://localhost:4002/main-backend/send-queryError-mail`,
           headers: {
             "Content-Type": "application/json",
             authorization: `Bearer ${token}`,

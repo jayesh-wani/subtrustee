@@ -1,5 +1,8 @@
-import { useQuery } from "@apollo/client";
-import { GET_INSTITUTES } from "../../../Qurries";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  GET_INSTITUTES,
+  LOGIN_TO_MERCHANT_WITH_TRUSTEE,
+} from "../../../Qurries";
 import {
   Pagination,
   RowsPerPageSelect,
@@ -31,8 +34,9 @@ export default function Institute() {
   const schools = data?.getSubTrusteeSchools?.schools || [];
   const debounceTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  if (loading) return <div>Loading...</div>;
+  // if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+  const [logInToMerchant] = useMutation(LOGIN_TO_MERCHANT_WITH_TRUSTEE);
 
   return (
     <div>
@@ -124,7 +128,9 @@ export default function Institute() {
           ],
           ...schools?.map((school: any, index: number) => [
             <div className="ml-4">
-              {/* {(data.getSchoolQuery.page - 1) * itemsPerRow.name + index + 1}. */}
+              {(data.getSubTrusteeSchools.page - 1) * itemsPerRow.name +
+                index +
+                1}
             </div>,
             <div
               className="flex justify-between items-center"
@@ -218,7 +224,7 @@ export default function Institute() {
 
             <button
               disabled={!school.pg_key || !school.email}
-              className="px-4 py-2 border disabled:border-gray-400 disabled:text-gray-400 border-edviron_black text-[#6687FF] font-normal rounded-[4px]"
+              className="px-4 py-2 border cursor-pointer disabled:border-gray-400 disabled:text-gray-400 border-edviron_black text-[#6687FF] font-normal rounded-[4px]"
               onClick={async () => {
                 try {
                   const res = await logInToMerchant({
@@ -227,13 +233,15 @@ export default function Institute() {
                     },
                   });
 
-                  if (res?.data?.generateMerchantLoginToken) {
+                  if (res?.data?.generateMerchantLoginTokenForSubtrustee) {
                     window.open(
-                      `${process.env.REACT_APP_MERCHANT_DASHBOARD_URL}/admin?token=${res?.data?.generateMerchantLoginToken}`,
+                      `${import.meta.env.VITE_MERCHANT_DASHBOARD_URL}/admin?token=${res?.data?.generateMerchantLoginTokenForSubtrustee}`,
                       "_blank",
                     );
                   }
-                } catch (err) {}
+                } catch (err) {
+                  console.log("error", err);
+                }
               }}
             >
               Login to Dashboard

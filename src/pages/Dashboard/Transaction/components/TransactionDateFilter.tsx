@@ -9,6 +9,7 @@ import {
   subDays,
 } from "date-fns";
 import { IoIosArrowDown } from "react-icons/io";
+import { getStartAndEndOfMonth } from "../../../../utils/getStartAndEndOfMonth";
 
 export const formatDate = (dateString: Date) => {
   const date = new Date(dateString);
@@ -113,7 +114,7 @@ function TransactionDateFilter({
       {openDateRange && (
         <div className="absolute text-sm bg-white xl:min-w-[26rem] min-w-[20rem] px-8 pt-2 pb-4 rounded-md shadow-lg z-10 flex flex-col">
           <p className="p-2 text-sm text-center">Custom Range</p>
-          <div className="flex flex-col xl:flex-row gap-x-4">
+          <div className="flex flex-col xl:flex-col gap-x-4">
             <div className="text-[10px] shrink-0 grid grid-cols-2">
               <button
                 className="p-1.5 cursor-pointer rounded-md text-left"
@@ -162,7 +163,7 @@ function TransactionDateFilter({
               // disabled={
               //   selectedRange.startDate.getDate() === new Date().getDate()
               // }
-              className=" disabled:bg-gray-100 disabled:text-gray-500  bg-edviron_black text-white px-3 py-1.5 rounded-lg "
+              className="border px-3 py-1.5 rounded-lg mr-2 text-[#6687FFCC]"
               onClick={async () => {
                 refetch();
                 setType("Custom Date");
