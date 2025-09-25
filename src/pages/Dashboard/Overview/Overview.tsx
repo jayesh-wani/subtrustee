@@ -66,7 +66,7 @@ export default function Overview() {
           <LineGraph
             dataArray={transactionReport?.getSubtrusteeBatchTransactionReport}
             setYear={setYear}
-            year={year?.name}
+            year={year}
             refetch={refetch}
           />
         </div>
