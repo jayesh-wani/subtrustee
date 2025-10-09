@@ -63,7 +63,6 @@ export default function Overview() {
         `${import.meta.env.VITE_PAYMENT_BACKEND_URL}/edviron-pg/get-transaction-report-batched?start_date=${start_date}&end_date=${end_date}&trustee_id=${trustee_id}&school_id=${school_id}&status=${status}`,
       );
       setTransactionAmountDetails(res.data.transactions[0]);
-      console.log(schoolIds.length);
       setSchoolLength(schoolIds.length || 0);
     };
 
