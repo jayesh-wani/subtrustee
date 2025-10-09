@@ -7,17 +7,21 @@ import { NavLink, Outlet } from "react-router-dom";
 import { useState, createContext } from "react";
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/navigation/Navbar";
+import { useQuery } from "@apollo/client";
+import { GET_SETTLEMENT_REPORTS } from "../../Qurries";
 
 export const dashboardContext = createContext<any>(null);
 function Dashboard({ user, set_user }) {
   const [menu, setMenu] = useState(false);
+  const { data: settlementData } = useQuery(GET_SETTLEMENT_REPORTS);
   const { logout } = useAuth();
+
   return (
     <dashboardContext.Provider
       value={{
         user,
         set_user,
-        // settlementData,
+        settlementData,
         // transactionReport,
         // password,
         // setPassword,

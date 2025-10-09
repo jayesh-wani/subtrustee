@@ -14,14 +14,18 @@ import { dashboardContext } from "../Dashboard";
 
 export default function Overview() {
   const { startDate, endDate, currentDate } = getStartAndEndOfMonth();
-  const { user } = useContext(dashboardContext);
+  const { settlementData, commissionTotalAmount, user } =
+    useContext(dashboardContext);
   const [transactionAmountDetails, setTransactionAmountDetails] =
     useState<any>(null);
   const [year, setYear] = useState({
     name: new Date().getFullYear().toString(),
   });
   const [schoolLength, setSchoolLength] = useState(0);
-
+  console.log(settlementData, "settlementData");
+  const settledAmount = getSettlementAmount(
+    settlementData?.getSettlementReportsSubTrustee,
+  );
   const {
     data: transactionReport,
     loading: transactionReportLoading,
@@ -84,7 +88,7 @@ export default function Overview() {
           description={"Total Registered Institutes"}
         />
         <Card
-          amount={1245}
+          amount={settledAmount}
           date={"Most Recent"}
           description={"Settlement amount"}
         />
