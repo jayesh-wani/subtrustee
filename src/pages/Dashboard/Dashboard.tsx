@@ -11,81 +11,59 @@ import { useQuery } from "@apollo/client";
 import { GET_SETTLEMENT_REPORTS } from "../../Qurries";
 
 export const dashboardContext = createContext<any>(null);
-function Dashboard({ user, set_user }) {
+function Dashboard() {
   const [menu, setMenu] = useState(false);
   const { data: settlementData } = useQuery(GET_SETTLEMENT_REPORTS);
   const { logout } = useAuth();
 
   return (
-    <dashboardContext.Provider
-      value={{
-        user,
-        set_user,
-        settlementData,
-        // transactionReport,
-        // password,
-        // setPassword,
-        // confirmPassword,
-        // setConfirmPassword,
-        // testData,
-        // setTestData,
-        // NEW_PLATFORM_TYPE,
-        // platform_type,
-        // transaction,
-        // setTransaction,
-        // commissionTotalAmount,
-        // setTotalCommission,
-        // commissionReport,
-      }}
-    >
-      <div className="dashboard flex w-full">
-        <div className="h-full ">
-          <Sidebar
-            schoolName={"Edviron"}
-            Link={NavLink}
-            menu={menu}
-            setMenu={setMenu}
-            //setDevMenu={setDevMenu}
-          >
-            <SidebarItem
-              icon={<AiFillHome className={"text-lg"} />}
-              name="Home"
-              to="/"
-            />
-            <SidebarItem
-              icon={<FaSchool className={"text-lg"} />}
-              name="Institute"
-              to="/institute"
-            />
-
-            <SidebarItem
-              icon={<CiReceipt className={"text-lg"} />}
-              name="Payments"
-              to="/payments"
-            />
-
-            <SidebarItem
-              className="mt-auto"
-              icon={<BiLogInCircle className={"text-lg"} />}
-              name="Log Out"
-              onTap={logout}
-            />
-          </Sidebar>
-        </div>
-        <div
-          className={
-            "flex flex-col overflow-hidden flex-1 relative  w-full bg-[#EDF1F4] pl-[5rem]"
-          }
+    <div className="dashboard flex w-full">
+      <div className="h-full ">
+        <Sidebar
+          schoolName={"Edviron"}
+          Link={NavLink}
+          menu={menu}
+          setMenu={setMenu}
+          //setDevMenu={setDevMenu}
         >
-          <Navbar />
-          <div className="flex flex-col transition-transform pt-[3.2rem] min-h-screen duration-200">
-            <div className="flex overflow-hidden flex-col w-full  z-10 lg:pr-8 pr-4">
-              <Outlet />
-            </div>
+          <SidebarItem
+            icon={<AiFillHome className={"text-lg"} />}
+            name="Home"
+            to="/"
+          />
+          <SidebarItem
+            icon={<FaSchool className={"text-lg"} />}
+            name="Institute"
+            to="/institute"
+          />
+
+          <SidebarItem
+            icon={<CiReceipt className={"text-lg"} />}
+            name="Payments"
+            to="/payments"
+          />
+
+          <SidebarItem
+            className="mt-auto"
+            icon={<BiLogInCircle className={"text-lg"} />}
+            name="Log Out"
+            onTap={logout}
+          />
+        </Sidebar>
+      </div>
+      <div
+        className={
+          "flex flex-col overflow-hidden flex-1 relative  w-full bg-[#EDF1F4] pl-[5rem]"
+        }
+      >
+        <Navbar />
+        <div className="flex flex-col transition-transform pt-[3.2rem] min-h-screen duration-200">
+          <div className="flex overflow-hidden flex-col w-full  z-10 lg:pr-8 pr-4">
+            <Outlet />
           </div>
         </div>
       </div>
-    </dashboardContext.Provider>
+    </div>
   );
 }
 

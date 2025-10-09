@@ -8,14 +8,21 @@ import {
   sumTransactionAmountOfToday,
 } from "./Helper/filterData";
 import { useContext, useEffect, useState } from "react";
-import { GET_BATCH_TRANSACTION, GET_INSTITUTES } from "../../../Qurries";
+import {
+  GET_BATCH_TRANSACTION,
+  GET_INSTITUTES,
+  GET_SETTLEMENT_REPORTS,
+} from "../../../Qurries";
 import axios from "axios";
 import { dashboardContext } from "../Dashboard";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function Overview() {
   const { startDate, endDate, currentDate } = getStartAndEndOfMonth();
-  const { settlementData, commissionTotalAmount, user } =
-    useContext(dashboardContext);
+  // const { settlementData, commissionTotalAmount } =
+  //   useContext(dashboardContext);
+  const { data: settlementData } = useQuery(GET_SETTLEMENT_REPORTS);
+  const { user, logout } = useAuth();
   const [transactionAmountDetails, setTransactionAmountDetails] =
     useState<any>(null);
   const [year, setYear] = useState({
@@ -63,7 +70,7 @@ export default function Overview() {
     GET_TRANSACTION_AMOUNT(
       currentDate,
       currentDate,
-      user?.getSubTrusteeQuery?.trustee_id,
+      user?.trustee_id || "",
       schoolIds,
       "SUCCESS",
     );

@@ -19,20 +19,8 @@ import TransactionsOfSettlement from "./pages/Dashboard/Settlement/TransactionsO
 import VendorTransaction from "./pages/Dashboard/Payments/VendorTab/VendorTransaction";
 import VendorSettlement from "./pages/Dashboard/Payments/VendorTab/VendorSettlement";
 import VendorTransactionReceipt from "./pages/Dashboard/Payments/VendorTab/VendorTransactionReceipt";
-import { useQuery } from "@apollo/client";
-import { GET_USER } from "./Qurries";
-import { useEffect, useState } from "react";
 
 function App() {
-  const [user, set_user] = useState(null);
-  const { data, loading, refetch } = useQuery(GET_USER, {
-    errorPolicy: "ignore",
-  });
-  useEffect(() => {
-    set_user(data);
-  }, [data, user]);
-  console.log(user, "user");
-
   return (
     <>
       <Routes>
@@ -48,7 +36,7 @@ function App() {
           path="/"
           element={
             <ProtectedRoute>
-              <Dashboard user={user} set_user={set_user} />
+              <Dashboard />
             </ProtectedRoute>
           }
         >
