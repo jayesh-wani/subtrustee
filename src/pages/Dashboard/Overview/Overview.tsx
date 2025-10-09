@@ -7,15 +7,20 @@ import {
   getSettlementAmount,
   sumTransactionAmountOfToday,
 } from "./Helper/filterData";
-import { useState } from "react";
-import { GET_BATCH_TRANSACTION } from "../../../Qurries";
+import { useContext, useEffect, useState } from "react";
+import { GET_BATCH_TRANSACTION, GET_INSTITUTES } from "../../../Qurries";
+import axios from "axios";
+import { dashboardContext } from "../Dashboard";
 
 export default function Overview() {
   const { startDate, endDate, currentDate } = getStartAndEndOfMonth();
-
+  const { user } = useContext(dashboardContext);
+  const [transactionAmountDetails, setTransactionAmountDetails] =
+    useState<any>(null);
   const [year, setYear] = useState({
     name: new Date().getFullYear().toString(),
   });
+  const [schoolLength, setSchoolLength] = useState(0);
 
   const {
     data: transactionReport,
@@ -26,29 +31,55 @@ export default function Overview() {
       year: year?.name,
     },
   });
+  const { data, loading } = useQuery(GET_INSTITUTES, {
+    variables: { page: 1, limit: 1000, searchQuery: "" },
+    fetchPolicy: "network-only",
+  });
 
-  // console.log(transactionReport, "transactionReport")
+  useEffect(() => {
+    if (!data?.getSubTrusteeSchools?.schools?.length) return; // wait for data
 
-  // const { sum: sumOfTodaysTransactions, count: countOfTodaysTransactions } =
-  //   sumTransactionAmountOfToday(
-  //     recentTransaction?.getTransactionReport?.transactionReport,
-  //   );
-  // const settledAmount = getSettlementAmount(
-  //   settlementData?.getSettlementReports,
-  // );
+    const schoolIds = data.getSubTrusteeSchools.schools.map((e) => e.school_id);
 
-  // const recentTransactions = getRecentTransactions(
-  //   recentTransaction?.getTransactionReport?.transactionReport,
-  // );
+    const GET_TRANSACTION_AMOUNT = async (
+      start_date: String,
+      end_date: String,
+      trustee_id: String,
+      school_id: [String],
+      status: String,
+    ) => {
+      const res = await axios.get(
+        `${import.meta.env.VITE_PAYMENT_BACKEND_URL}/edviron-pg/get-transaction-report-batched?start_date=${start_date}&end_date=${end_date}&trustee_id=${trustee_id}&school_id=${school_id}&status=${status}`,
+      );
+      setTransactionAmountDetails(res.data.transactions[0]);
+      console.log(schoolIds.length);
+      setSchoolLength(schoolIds.length || 0);
+    };
 
+    GET_TRANSACTION_AMOUNT(
+      currentDate,
+      currentDate,
+      user?.getSubTrusteeQuery?.trustee_id,
+      schoolIds,
+      "SUCCESS",
+    );
+  }, [data, user, currentDate]);
   return (
     <div className="mt-8">
       <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-4 mb-4">
-        <Card amount={0} date={"Today"} description={"Transaction Amount"} />
-        <Card amount={0} date={"Today"} description={"Number of transaction"} />
+        <Card
+          amount={transactionAmountDetails?.totalTransactionAmount || 0}
+          date={"Today"}
+          description={"Transaction Amount"}
+        />
+        <Card
+          amount={transactionAmountDetails?.totalTransactions - 1 || 0}
+          date={"Today"}
+          description={"Number of transaction"}
+        />
 
         <Card
-          amount={10}
+          amount={schoolLength || 0}
           date={"Till date"}
           description={"Total Registered Institutes"}
         />
