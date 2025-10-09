@@ -18,8 +18,6 @@ import { useAuth } from "../../../context/AuthContext";
 
 export default function Overview() {
   const { startDate, endDate, currentDate } = getStartAndEndOfMonth();
-  // const { settlementData, commissionTotalAmount } =
-  //   useContext(dashboardContext);
   const { data: settlementData } = useQuery(GET_SETTLEMENT_REPORTS);
   const { user, logout } = useAuth();
   const [transactionAmountDetails, setTransactionAmountDetails] =
@@ -28,7 +26,6 @@ export default function Overview() {
     name: new Date().getFullYear().toString(),
   });
   const [schoolLength, setSchoolLength] = useState(0);
-  console.log(settlementData, "settlementData");
   const settledAmount = getSettlementAmount(
     settlementData?.getSettlementReportsSubTrustee,
   );
@@ -47,7 +44,7 @@ export default function Overview() {
   });
 
   useEffect(() => {
-    if (!data?.getSubTrusteeSchools?.schools?.length) return; // wait for data
+    if (!data?.getSubTrusteeSchools?.schools?.length) return;
 
     const schoolIds = data.getSubTrusteeSchools.schools.map((e) => e.school_id);
 
