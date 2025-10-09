@@ -42,7 +42,7 @@ export default function Overview() {
     variables: { page: 1, limit: 1000, searchQuery: "" },
     fetchPolicy: "network-only",
   });
-
+  console.log(data, "data");
   useEffect(() => {
     if (!data?.getSubTrusteeSchools?.schools?.length) return;
 
@@ -85,7 +85,7 @@ export default function Overview() {
         />
 
         <Card
-          amount={schoolLength || 0}
+          amount={data?.getSubTrusteeSchools?.totalItems || 0}
           date={"Till date"}
           description={"Total Registered Institutes"}
         />
