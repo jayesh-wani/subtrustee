@@ -11,6 +11,7 @@ import Navbar from "../../components/navigation/Navbar";
 function Dashboard() {
   const [menu, setMenu] = useState(false);
   const { logout } = useAuth();
+
   return (
     <div className="dashboard flex w-full">
       <div className="h-full ">
