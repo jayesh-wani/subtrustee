@@ -74,7 +74,11 @@ export default function Overview() {
     <div className="mt-8">
       <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-4 mb-4">
         <Card
-          amount={transactionAmountDetails?.totalTransactionAmount || 0}
+          amount={
+            transactionAmountDetails?.totalTransactionAmount?.toLocaleString(
+              "hi-in",
+            ) || 0
+          }
           date={"Today"}
           description={"Transaction Amount"}
         />
@@ -90,7 +94,9 @@ export default function Overview() {
           description={"Total Registered Institutes"}
         />
         <Card
-          amount={settledAmount}
+          amount={(Math.floor(settledAmount * 100) / 100).toLocaleString(
+            "hi-in",
+          )}
           date={"Most Recent"}
           description={"Settlement amount"}
         />
