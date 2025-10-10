@@ -83,7 +83,7 @@ export default function Overview() {
           description={"Transaction Amount"}
         />
         <Card
-          amount={transactionAmountDetails?.totalTransactions - 1 || 0}
+          amount={transactionAmountDetails?.totalTransactions || 0}
           date={"Today"}
           description={"Number of transaction"}
         />
