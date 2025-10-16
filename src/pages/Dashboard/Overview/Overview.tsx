@@ -1,6 +1,11 @@
 import { useQuery } from "@apollo/client";
 import Card from "../../../components/Card/Card";
 import LineGraph from "../../../components/Graph/LineGraph";
+import { _Table } from "../../../components/Table";
+import ToolTip from "../../../components/generics/ToolTip";
+import { MdContentCopy } from "react-icons/md";
+import { NavLink } from "react-router-dom";
+import RingGraph from "../../../components/Graph/RingGraph";
 import { getStartAndEndOfMonth } from "../../../utils/getStartAndEndOfMonth";
 import {
   getRecentTransactions,
@@ -112,6 +117,73 @@ export default function Overview() {
             year={year}
             refetch={refetch}
           />
+        </div>
+
+        <div className=" xl:col-span-1 xl:order-2 order-3 col-span-3 lg:row-span-2">
+          {_Table ? (
+            <_Table
+              perPage={false}
+              exportBtn={false}
+              bgColor={" bg-transparent"}
+              boxPadding={" p-0"}
+              copyRight={false}
+              loading={false}
+              description={
+                <div className="flex w-full justify-between text-xs pl-4 pr-1">
+                  <p className="">Recent transactions</p>
+                  <NavLink
+                    to="/payments"
+                    className="text-[#6687FF] cursor-pointer"
+                  >
+                    View all
+                  </NavLink>
+                </div>
+              }
+              data={[
+                ["Date", "Order ID", "Amount"],
+                ...(getRecentTransactions(transactionAmountDetails) || []).map(
+                  (row: any) => [
+                    <div className=" max-w-[5rem]" key={row?.orderID}>
+                      {new Date(row?.createdAt).toLocaleString("hi")}
+                    </div>,
+
+                    <div className="flex justify-between items-center">
+                      <div
+                        className="truncate max-w-[7.5rem]"
+                        title={row?.collect_id}
+                      >
+                        {row?.collect_id}
+                      </div>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard?.writeText?.(
+                            row?.collect_id || "",
+                          );
+                        }}
+                      >
+                        <ToolTip text="Copy Order ID">
+                          <MdContentCopy
+                            className="cursor-pointer text-[#717171] shrink-0 text-xl"
+                            style={{
+                              fontSize: "22px",
+                              color: "",
+                              backgroundColor: "transparent",
+                            }}
+                          />
+                        </ToolTip>
+                      </button>
+                    </div>,
+                    <div
+                      key={row?.collect_id}
+                    >{`₹${row?.transaction_amount !== null ? (Math.floor(row?.transaction_amount * 100) / 100).toLocaleString("hi-in") : 0}`}</div>,
+                  ],
+                ),
+              ]}
+            />
+          ) : null}
+        </div>
+        <div className="xl:col-span-2 xl:order-3 order-2 col-span-3 lg:row-span-1 row-span-2">
+          <RingGraph kycDetails={null} amountOfSchools={schoolLength} />
         </div>
       </div>
     </div>
