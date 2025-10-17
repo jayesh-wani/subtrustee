@@ -17,9 +17,11 @@ import {
   GET_BATCH_TRANSACTION,
   GET_INSTITUTES,
   GET_SETTLEMENT_REPORTS,
+  GET_TRANSACTIONS,
 } from "../../../Qurries";
 import axios from "axios";
 import { useAuth } from "../../../context/AuthContext";
+import { handleCopyContent } from "../../Dashboard/Dashboard";
 
 export default function Overview() {
   const { startDate, endDate, currentDate } = getStartAndEndOfMonth();
@@ -31,6 +33,13 @@ export default function Overview() {
     name: new Date().getFullYear().toString(),
   });
   const [schoolLength, setSchoolLength] = useState(0);
+  const [recentTransactions, setRecentTransactions] = useState<any[]>([]);
+  const [kycDetails, setKycDetails] = useState({
+    active: 0,
+    inactive: 0,
+    pending: 0,
+  });
+
   const settledAmount = getSettlementAmount(
     settlementData?.getSettlementReportsSubTrustee,
   );
@@ -47,11 +56,39 @@ export default function Overview() {
     variables: { page: 1, limit: 1000, searchQuery: "" },
     fetchPolicy: "network-only",
   });
-
+  const { data: recentTransactionsData, loading: recentTransactionsLoading } =
+    useQuery(GET_TRANSACTIONS, {
+      variables: {
+        startDate: currentDate,
+        endDate: currentDate,
+        status: "SUCCESS",
+        page: "1",
+        limit: "10",
+      },
+      fetchPolicy: "cache-and-network",
+    });
   useEffect(() => {
     if (!data?.getSubTrusteeSchools?.schools?.length) return;
 
     const schoolIds = data.getSubTrusteeSchools.schools.map((e) => e.school_id);
+    const schools = data.getSubTrusteeSchools.schools;
+    const kycStatusCounts = schools.reduce(
+      (acc: any, school: any) => {
+        const merchantStatus = school.merchantStatus?.toLowerCase();
+        const hasPgKey = !!school.pg_key;
+        if (hasPgKey && merchantStatus && merchantStatus.includes("approved")) {
+          acc.active += 1;
+        } else if (merchantStatus && merchantStatus.includes("uploaded")) {
+          acc.pending += 1;
+        } else {
+          acc.inactive += 1;
+        }
+
+        return acc;
+      },
+      { active: 0, inactive: 0, pending: 0 },
+    );
+    setKycDetails(kycStatusCounts);
 
     const GET_TRANSACTION_AMOUNT = async (
       start_date: String,
@@ -75,6 +112,23 @@ export default function Overview() {
       "SUCCESS",
     );
   }, [data, user, currentDate]);
+
+  useEffect(() => {
+    if (
+      recentTransactionsData?.getSubtrusteeTransactionReport?.transactionReport
+    ) {
+      const formattedTransactions =
+        recentTransactionsData.getSubtrusteeTransactionReport.transactionReport
+          .filter((transaction: any) => transaction.status === "SUCCESS")
+          .slice(0, 10)
+          .map((transaction: any) => ({
+            createdAt: transaction.createdAt,
+            collect_id: transaction.collect_id,
+            transaction_amount: transaction.transaction_amount,
+          }));
+      setRecentTransactions(formattedTransactions);
+    }
+  }, [recentTransactionsData]);
   return (
     <div className="mt-8">
       <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-4 mb-4">
@@ -127,7 +181,7 @@ export default function Overview() {
               bgColor={" bg-transparent"}
               boxPadding={" p-0"}
               copyRight={false}
-              loading={false}
+              loading={recentTransactionsLoading}
               description={
                 <div className="flex w-full justify-between text-xs pl-4 pr-1">
                   <p className="">Recent transactions</p>
@@ -141,49 +195,45 @@ export default function Overview() {
               }
               data={[
                 ["Date", "Order ID", "Amount"],
-                ...(getRecentTransactions(transactionAmountDetails) || []).map(
-                  (row: any) => [
-                    <div className=" max-w-[5rem]" key={row?.orderID}>
-                      {new Date(row?.createdAt).toLocaleString("hi")}
-                    </div>,
+                ...recentTransactions.map((row: any) => [
+                  <div className=" max-w-[5rem]" key={row?.collect_id}>
+                    {new Date(row?.createdAt).toLocaleString("hi")}
+                  </div>,
 
-                    <div className="flex justify-between items-center">
-                      <div
-                        className="truncate max-w-[7.5rem]"
-                        title={row?.collect_id}
-                      >
-                        {row?.collect_id}
-                      </div>
-                      <button
-                        onClick={() => {
-                          navigator.clipboard?.writeText?.(
-                            row?.collect_id || "",
-                          );
-                        }}
-                      >
-                        <ToolTip text="Copy Order ID">
-                          <MdContentCopy
-                            className="cursor-pointer text-[#717171] shrink-0 text-xl"
-                            style={{
-                              fontSize: "22px",
-                              color: "",
-                              backgroundColor: "transparent",
-                            }}
-                          />
-                        </ToolTip>
-                      </button>
-                    </div>,
+                  <div className="flex justify-between items-center">
                     <div
-                      key={row?.collect_id}
-                    >{`₹${row?.transaction_amount !== null ? (Math.floor(row?.transaction_amount * 100) / 100).toLocaleString("hi-in") : 0}`}</div>,
-                  ],
-                ),
+                      className="truncate max-w-[7.5rem]"
+                      title={row?.collect_id}
+                    >
+                      {row?.collect_id}
+                    </div>
+                    <button
+                      onClick={() => {
+                        handleCopyContent(row?.collect_id || "");
+                      }}
+                    >
+                      <ToolTip text="Copy Order ID">
+                        <MdContentCopy
+                          className="cursor-pointer text-[#717171] shrink-0 text-xl"
+                          style={{
+                            fontSize: "22px",
+                            color: "",
+                            backgroundColor: "transparent",
+                          }}
+                        />
+                      </ToolTip>
+                    </button>
+                  </div>,
+                  <div
+                    key={row?.collect_id}
+                  >{`₹${row?.transaction_amount !== null ? (Math.floor(row?.transaction_amount * 100) / 100).toLocaleString("hi-in") : 0}`}</div>,
+                ]),
               ]}
             />
           ) : null}
         </div>
         <div className="xl:col-span-2 xl:order-3 order-2 col-span-3 lg:row-span-1 row-span-2">
-          <RingGraph kycDetails={null} amountOfSchools={schoolLength} />
+          <RingGraph kycDetails={kycDetails} amountOfSchools={schoolLength} />
         </div>
       </div>
     </div>
